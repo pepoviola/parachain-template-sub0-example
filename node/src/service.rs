@@ -418,7 +418,8 @@ pub fn parachain_build_import_queue(
 	let slot_duration = cumulus_client_consensus_aura::slot_duration(&*client)?;
 
 	cumulus_client_consensus_aura::import_queue::<
-		sp_consensus_aura::sr25519::AuthorityPair,
+		//sp_consensus_aura::sr25519::AuthorityPair,
+		sp_consensus_aura::ed25519::AuthorityPair,
 		_,
 		_,
 		_,
@@ -482,7 +483,7 @@ pub async fn start_parachain_node(
 				telemetry.clone(),
 			);
 
-			Ok(AuraConsensus::build::<sp_consensus_aura::sr25519::AuthorityPair, _, _, _, _, _, _>(
+			Ok(AuraConsensus::build::<sp_consensus_aura::ed25519::AuthorityPair, _, _, _, _, _, _>(
 				BuildAuraConsensusParams {
 					proposer_factory,
 					create_inherent_data_providers: move |_, (relay_parent, validation_data)| {

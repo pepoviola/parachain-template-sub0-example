@@ -40,7 +40,12 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot,
 };
+
+
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
+// type for Sub0 presentation
+pub type CustomAuraId = sp_consensus_aura::ed25519::AuthorityId;
+//
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
 use xcm_config::{XcmConfig, XcmOriginToTransactDispatchOrigin};
 
@@ -424,7 +429,8 @@ impl pallet_session::Config for Runtime {
 }
 
 impl pallet_aura::Config for Runtime {
-	type AuthorityId = AuraId;
+	//type AuthorityId = AuraId;
+	type AuthorityId = CustomAuraId;
 	type DisabledValidators = ();
 	type MaxAuthorities = MaxAuthorities;
 }
@@ -516,12 +522,12 @@ mod benches {
 }
 
 impl_runtime_apis! {
-	impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
+	impl sp_consensus_aura::AuraApi<Block, CustomAuraId> for Runtime {
 		fn slot_duration() -> sp_consensus_aura::SlotDuration {
 			sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())
 		}
 
-		fn authorities() -> Vec<AuraId> {
+		fn authorities() -> Vec<CustomAuraId> {
 			Aura::authorities().into_inner()
 		}
 	}
